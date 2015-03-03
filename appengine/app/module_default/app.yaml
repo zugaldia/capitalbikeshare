@@ -1,0 +1,35 @@
+application: com-zugaldia-capitalbikeshare
+version: v1
+runtime: python27
+api_version: 1
+threadsafe: true
+module: default
+
+# We're using automatic scaling, with a default instance type (F1)
+# https://cloud.google.com/appengine/docs/python/modules/#Python_Instance_scaling_and_class
+# (When using automatic scaling, only the F1 (default), F2, F4, and F4_1G
+# instance classes are available)
+instance_class: F1
+automatic_scaling:
+  min_idle_instances: 1
+  max_pending_latency: 1s
+
+handlers:
+
+# Static resources
+- url: /favicon\.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon\.ico
+  secure: optional
+- url: /static
+  static_dir: static
+  secure: optional
+
+# API
+- url: .*
+  script: handle_main.app
+  secure: always
+
+libraries:
+- name: pycrypto
+  version: "2.6"
