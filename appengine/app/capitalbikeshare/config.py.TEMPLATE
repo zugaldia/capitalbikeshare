@@ -1,0 +1,25 @@
+class Config():
+
+    '''
+    Flask config
+    '''
+
+    FLASK = {
+        'DEBUG': True,
+        'SECRET_KEY': '[ADD YOUR FLASK SECRET KEY HERE]'}
+
+    '''
+    Bugsnag config
+    '''
+
+    BUGSNAG = {
+        'api_key': '[ADD YOUR BUGSNAG API KEY HERE]',
+        'notify_release_stages': ['production'],
+        'release_stage': 'production',
+        'app_version': 'v1'}
+
+    '''
+    API config
+    '''
+
+    API_BASE = '/api/v1'
