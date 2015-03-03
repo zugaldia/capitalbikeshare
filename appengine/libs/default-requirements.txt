@@ -1,0 +1,10 @@
+# Module requirements
+
+blinker
+bugsnag
+Flask
+Flask-RESTful
+jinja2
+markupsafe
+python-dateutil
+six
