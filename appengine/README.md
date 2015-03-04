@@ -6,11 +6,11 @@ We provide four GET methods described below.
 
 ## Get status feed
 
-It's the same XML file mentioned above, in JSON format.
+Provides the same information as the XML file mentioned above, but in JSON format.
 
-Sample request: https://com-zugaldia-capitalbikeshare.appspot.com/api/v1/data/status_feed
+* Sample request: [/api/v1/data/status_feed](https://com-zugaldia-capitalbikeshare.appspot.com/api/v1/data/status_feed)
 
-Sample response:
+* Sample response:
 
 ```
 
@@ -61,11 +61,11 @@ Sample response:
 }
 ```
 
-Optionally, you can add `latitude` and `longitude` fields, which provides an enhancement over the original XML file. In this cases, the API will compute the distance (in meters and minutes) to that point and it'll sort the stations by distance.
+Optionally, you can add `latitude` and `longitude` fields (which provides an enhancement over the original XML API). In this case, the API will compute the distance (in meters and minutes) to that point and it'll sort the stations by distance.
 
-Sample request (White House): https://com-zugaldia-capitalbikeshare.appspot.com/api/v1/data/status_feed?latitude=38.8977&longitude=-77.0365
+* Sample request (White House): [/api/v1/data/status_feed?latitude=38.8977&longitude=-77.0365](https://com-zugaldia-capitalbikeshare.appspot.com/api/v1/data/status_feed?latitude=38.8977&longitude=-77.0365)
 
-Sample response:
+* Sample response:
 
 ```
 
@@ -123,11 +123,11 @@ Sample response:
 
 ## Get status
 
-Gives a summary of the stations situations around you. This can give the user an idea of how easy/difficult is going to be to find a bike/dock around.
+Gives a summary of the stations situation around you. This gives the user an idea of how easy/difficult is going to be to find a bike/dock around.
 
-Sample request (Dupont Circle): https://com-zugaldia-capitalbikeshare.appspot.com/api/v1/data/status?latitude=38.90962&longitude=-77.04341
+* Sample request (Dupont Circle): [/api/v1/data/status?latitude=38.90962&longitude=-77.04341](https://com-zugaldia-capitalbikeshare.appspot.com/api/v1/data/status?latitude=38.90962&longitude=-77.04341)
 
-Sample response:
+* Sample response:
 
 ```
 {
@@ -145,11 +145,11 @@ In this method, both the `latitude` and `longitude` fields are required. Station
 
 ## Get closest bike
 
-Find the closest bike available to a given location.
+Finds the closest bike available to a given location.
 
-Sample request (Washington Monument): https://com-zugaldia-capitalbikeshare.appspot.com/api/v1/data/closest_bike?latitude=38.889468&longitude=-77.03524
+* Sample request (Washington Monument): [/api/v1/data/closest_bike?latitude=38.889468&longitude=-77.03524](https://com-zugaldia-capitalbikeshare.appspot.com/api/v1/data/closest_bike?latitude=38.889468&longitude=-77.03524)
 
-Sample response:
+* Sample response:
 
 ```
 {
@@ -181,11 +181,11 @@ In this method, both the `latitude` and `longitude` fields are required. Station
 
 ## Get closest dock
 
-Find the closest dock available to a given location.
+Finds the closest dock available to a given location.
 
-Sample request (Starbucks, U St NW): https://com-zugaldia-capitalbikeshare.appspot.com/api/v1/data/closest_dock?latitude=38.9168297&longitude=-77.0370018
+* Sample request (Starbucks, U St NW): [/api/v1/data/closest_dock?latitude=38.9168297&longitude=-77.0370018](https://com-zugaldia-capitalbikeshare.appspot.com/api/v1/data/closest_dock?latitude=38.9168297&longitude=-77.0370018)
 
-Sample response:
+* Sample response:
 
 ```
 {
