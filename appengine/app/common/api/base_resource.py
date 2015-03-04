@@ -65,9 +65,9 @@ class BaseResource(Resource):
     def set_data(self, data):
         if not isinstance(data, dict):
             raise Exception('BaseResource: data must be a dict.')
-        if ('messages' in data or 'status' in data):
+        if ('messages' in data or 'code' in data):
             raise Exception(
-                'BaseResource: messages and status are reserved keys.')
+                'BaseResource: messages and code are reserved keys.')
         self._data = data
 
     def set_code(self, code):
@@ -96,5 +96,5 @@ class BaseResource(Resource):
     def get_response(self):
         data = self._data
         data.update({'messages': self._messages})
-        data.update({'status': self._code})
+        data.update({'code': self._code})
         return data, self._code, self._headers
