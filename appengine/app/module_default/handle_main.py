@@ -1,5 +1,5 @@
-from capitalbikeshare.bootstrap import create_app
-from capitalbikeshare.config import Config
+from common.bootstrap import create_app
+from common.config import Config
 from default.api.data import ApiData
 from default.api.meta import ApiMeta
 from default.blueprints.landing import landing_blueprint

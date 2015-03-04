@@ -2,8 +2,8 @@
 A decorator for all API methods
 '''
 
-from capitalbikeshare.api.api_exception import ApiException
-from capitalbikeshare.components.bugsnag.bugsnag_client import BugsnagClient
+from common.api.api_exception import ApiException
+from common.components.bugsnag.bugsnag_client import BugsnagClient
 from werkzeug.exceptions import BadRequest
 
 import logging

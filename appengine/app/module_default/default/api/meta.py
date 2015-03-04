@@ -1,6 +1,6 @@
-from capitalbikeshare.api.api_logic import api_logic
-from capitalbikeshare.api.api_requests import echo_request
-from capitalbikeshare.api.base_resource import BaseResource
+from common.api.api_logic import api_logic
+from common.api.api_requests import echo_request
+from common.api.base_resource import BaseResource
 from flask.ext.restful import fields, marshal
 
 import logging
