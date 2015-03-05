@@ -9,12 +9,6 @@ import retrofit.http.Query;
  */
 public interface ApiInterface {
 
-    @GET("/api/v1/data/status")
-    void getStatus(
-            @Query("latitude") double latitude,
-            @Query("longitude") double longitude,
-            Callback<StatusResponse> cb);
-
     @GET("/api/v1/data/closest_bike")
     void getClosestBike(
             @Query("latitude") double latitude,
@@ -26,5 +20,11 @@ public interface ApiInterface {
             @Query("latitude") double latitude,
             @Query("longitude") double longitude,
             Callback<ClosestResponse> cb);
+
+    @GET("/api/v1/data/status")
+    void getStatus(
+            @Query("latitude") double latitude,
+            @Query("longitude") double longitude,
+            Callback<StatusResponse> cb);
 
 }
