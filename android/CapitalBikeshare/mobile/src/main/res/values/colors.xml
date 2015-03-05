@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="white" type="color">#FFFFFF</item>
+
+    <!-- Material design red + yellow palette to match the style of Capital Bikeshare -->
+    <!-- http://www.google.com/design/spec/style/color.html#color-color-palette -->
+
+    <item name="red500" type="color">#F44336</item>
+    <item name="red600" type="color">#E53935</item>
+    <item name="red700" type="color">#D32F2F</item>
+    <item name="red800" type="color">#C62828</item>
+    <item name="red900" type="color">#B71C1C</item>
+
+    <item name="yellow500" type="color">#FFEB3B</item>
+
+</resources>

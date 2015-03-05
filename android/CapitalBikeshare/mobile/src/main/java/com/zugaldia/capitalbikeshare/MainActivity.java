@@ -1,30 +1,50 @@
 package com.zugaldia.capitalbikeshare;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 
+import com.bugsnag.android.Bugsnag;
 
+/**
+ * Main app activity
+ */
 public class MainActivity extends ActionBarActivity {
+
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+        // Init Bugsnag
+        //initBugsnag();
+
+        // Set view
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container, new MainFragment())
                     .commit();
         }
     }
 
+    /*
+     * Bugsnag
+     */
+
+    public void initBugsnag() {
+        Log.d(LOG_TAG, "initBugsnag");
+        Bugsnag.init(this);
+    }
+
+    /*
+     * Menu
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,19 +68,4 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-    }
 }
