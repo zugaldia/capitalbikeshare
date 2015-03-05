@@ -21,7 +21,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         // Init Bugsnag
-        //initBugsnag();
+        initBugsnag();
 
         // Set view
         setContentView(R.layout.activity_main);
