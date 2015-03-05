@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.bugsnag.android.Bugsnag;
 
@@ -60,8 +61,10 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        // About page
+        if (id == R.id.action_about) {
+            Toast toast = Toast.makeText(this, "Nothing here just yet.", Toast.LENGTH_LONG);
+            toast.show();
             return true;
         }
 
