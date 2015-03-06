@@ -14,10 +14,17 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
+import com.zugaldia.capitalbikeshare.api.ApiService;
+import com.zugaldia.capitalbikeshare.api.ClosestResponse;
+import com.zugaldia.capitalbikeshare.api.StatusResponse;
 
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Listens to requests from the watch
@@ -39,6 +46,7 @@ public class AppWearableListenerService extends WearableListenerService {
     public static final String KEY_TIMESTAMP = "TIMESTAMP";
 
     private GoogleApiClient mGoogleApiClient;
+    private ApiService apiService;
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
@@ -55,6 +63,9 @@ public class AppWearableListenerService extends WearableListenerService {
             Log.e(LOG_TAG, "Failed to connect to GoogleApiClient.");
             return;
         }
+
+        // Build our API service as well
+        apiService = new ApiService();
 
         // Loop through the events
         for (DataEvent event : events) {
@@ -80,29 +91,107 @@ public class AppWearableListenerService extends WearableListenerService {
      */
 
     private void handleFindBike(double latitude, double longitude) {
-        Log.d(LOG_TAG, "PATH_REQUEST_FIND_BIKE request!");
-        putRequest(PATH_RESPONSE_FIND_BIKE, "Coming soon!");
+        Log.d(LOG_TAG, "handleFindBike");
+        apiService.getClosestBike(
+                latitude, longitude, new ClosestBikeCallback());
     }
 
     private void handleFindDock(double latitude, double longitude) {
-        Log.d(LOG_TAG, "PATH_REQUEST_FIND_DOCK request!");
-        putRequest(PATH_RESPONSE_FIND_DOCK, "Coming soon!");
+        Log.d(LOG_TAG, "handleFindDock");
+        apiService.getClosestDock(
+                latitude, longitude, new ClosestDockCallback());
     }
 
     private void handleGetStatus(double latitude, double longitude) {
-        Log.d(LOG_TAG, "PATH_REQUEST_GET_STATUS request!");
-        putRequest(PATH_RESPONSE_GET_STATUS, "Coming soon!");
+        Log.d(LOG_TAG, "handleGetStatus");
+        apiService.getStatus(
+                latitude, longitude, new StatusCallback());
     }
 
     /*
      * Send the response
      */
 
-    public void putRequest(String path, String text) {
+    public void putRequest(String path, String text, double latitude, double longitude) {
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(path);
         putDataMapRequest.getDataMap().putString(KEY_TEXT, text);
+        putDataMapRequest.getDataMap().putDouble(KEY_LATITUDE, latitude);
+        putDataMapRequest.getDataMap().putDouble(KEY_LONGITUDE, longitude);
         putDataMapRequest.getDataMap().putLong(KEY_TIMESTAMP, new Date().getTime());
         PutDataRequest putDataRequest = putDataMapRequest.asPutDataRequest();
         Wearable.DataApi.putDataItem(mGoogleApiClient, putDataRequest);
+    }
+
+    /*
+     * API callbacks
+     */
+
+    class ClosestBikeCallback implements Callback<ClosestResponse> {
+
+        @Override
+        public void success(ClosestResponse closestResponse, Response response) {
+            if (closestResponse == null || closestResponse.code != 200) {
+                Log.d(LOG_TAG, "Failed: Server Error");
+                putRequest(PATH_RESPONSE_FIND_BIKE, "ERROR", 0.0, 0.0);
+            } else {
+                putRequest(
+                        PATH_RESPONSE_FIND_BIKE,
+                        closestResponse.station.getBikesSummary(),
+                        closestResponse.station.latitude,
+                        closestResponse.station.longitude);
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.d(LOG_TAG, "Failed: " + error.toString());
+            putRequest(PATH_RESPONSE_FIND_BIKE, "ERROR", 0.0, 0.0);
+        }
+    }
+
+    class ClosestDockCallback implements Callback<ClosestResponse> {
+
+        @Override
+        public void success(ClosestResponse closestResponse, Response response) {
+            if (closestResponse == null || closestResponse.code != 200) {
+                Log.d(LOG_TAG, "Failed: Server Error");
+                putRequest(PATH_RESPONSE_FIND_DOCK, "ERROR", 0.0, 0.0);
+            } else {
+                putRequest(
+                        PATH_RESPONSE_FIND_DOCK,
+                        closestResponse.station.getDocksSummary(),
+                        closestResponse.station.latitude,
+                        closestResponse.station.longitude);
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.d(LOG_TAG, "Failed: " + error.toString());
+            putRequest(PATH_RESPONSE_FIND_DOCK, "ERROR", 0.0, 0.0);
+        }
+    }
+
+    class StatusCallback implements Callback<StatusResponse> {
+
+        @Override
+        public void success(StatusResponse statusResponse, Response response) {
+            if (statusResponse == null || statusResponse.code != 200) {
+                Log.d(LOG_TAG, "Failed: Server Error");
+                putRequest(PATH_RESPONSE_GET_STATUS, "ERROR", 0.0, 0.0);
+            } else {
+                // There's no latlon in this response
+                putRequest(
+                        PATH_RESPONSE_GET_STATUS,
+                        statusResponse.status.getSummary(),
+                        0.0, 0.0);
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.d(LOG_TAG, "Failed: " + error.toString());
+            putRequest(PATH_RESPONSE_GET_STATUS, "ERROR", 0.0, 0.0);
+        }
     }
 }
