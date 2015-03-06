@@ -2,12 +2,14 @@ package com.zugaldia.capitalbikeshare;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.wearable.view.WearableListView;
 import android.util.Log;
 
 import com.zugaldia.capitalbikeshare.data.DataService;
+import com.zugaldia.capitalbikeshare.location.LocationService;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class MainActivity extends Activity implements WearableListView.ClickList
 
     // Our services
     private DataService dataService;
+    private LocationService locationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +44,9 @@ public class MainActivity extends Activity implements WearableListView.ClickList
         listView.setAdapter(new WearableListViewAdapter(this, elements));
         listView.setClickListener(this);
 
-        // Data service
+        // Our services
         dataService = new DataService(this);
+        locationService = new LocationService(this);
     }
 
     @Override
@@ -50,6 +54,7 @@ public class MainActivity extends Activity implements WearableListView.ClickList
         Log.d(LOG_TAG, "onResume");
         super.onResume();
         dataService.onResume();
+        locationService.onResume();
 
         // I don't like the UI as it is right now with voice recognition. Though the code
         // is here, let's rethink it before enabling it.
@@ -60,6 +65,7 @@ public class MainActivity extends Activity implements WearableListView.ClickList
     protected void onPause() {
         super.onPause();
         dataService.onPause();
+        locationService.onPause();
     }
 
     /*
@@ -101,11 +107,11 @@ public class MainActivity extends Activity implements WearableListView.ClickList
         Log.d(LOG_TAG, "Command: " + command);
 
         // We should probably be more flexible than this
-        if (command.toLowerCase().trim() == "find me a bike") {
+        if (command.toLowerCase().trim().equals("find me a bike")) {
             handleFindBike();
-        } else if (command.toLowerCase().trim() == "find me a dock") {
+        } else if (command.toLowerCase().trim().equals("find me a dock")) {
             handleFindDock();
-        } else if (command.toLowerCase().trim() == "get the status") {
+        } else if (command.toLowerCase().trim().equals("get the status")) {
             handleGetStatus();
         }
     }
@@ -138,23 +144,32 @@ public class MainActivity extends Activity implements WearableListView.ClickList
      */
 
     private void handleFindBike() {
-        Log.d(LOG_TAG, "OPTION_FIND_BIKE");
-        double latitude = 10.5;
-        double longitude = -20.0;
-        dataService.putRequest(DataService.PATH_REQUEST_FIND_BIKE, latitude, longitude);
+        Log.d(LOG_TAG, "handleFindBike");
+        Location location = locationService.getLastLocation();
+        if (location != null) {
+            dataService.putRequest(
+                    DataService.PATH_REQUEST_FIND_BIKE,
+                    location.getLatitude(), location.getLongitude());
+        }
     }
 
     private void handleFindDock() {
-        Log.d(LOG_TAG, "OPTION_FIND_DOCK");
-        double latitude = 10.6;
-        double longitude = -20.1;
-        dataService.putRequest(DataService.PATH_REQUEST_FIND_DOCK, latitude, longitude);
+        Log.d(LOG_TAG, "handleFindDock");
+        Location location = locationService.getLastLocation();
+        if (location != null) {
+            dataService.putRequest(
+                    DataService.PATH_REQUEST_FIND_DOCK,
+                    location.getLatitude(), location.getLongitude());
+        }
     }
 
     private void handleGetStatus() {
-        Log.d(LOG_TAG, "OPTION_GET_STATUS");
-        double latitude = 10.7;
-        double longitude = -20.2;
-        dataService.putRequest(DataService.PATH_REQUEST_GET_STATUS, latitude, longitude);
+        Log.d(LOG_TAG, "handleGetStatus");
+        Location location = locationService.getLastLocation();
+        if (location != null) {
+            dataService.putRequest(
+                    DataService.PATH_REQUEST_GET_STATUS,
+                    location.getLatitude(), location.getLongitude());
+        }
     }
 }

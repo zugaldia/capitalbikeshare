@@ -82,7 +82,7 @@ public class DataService implements
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        Log.d(LOG_TAG, "onConnected: " + connectionHint);
+        Log.d(LOG_TAG, "onConnected");
 
         // Now we can use the Data Layer API
         Wearable.DataApi.addListener(mGoogleApiClient, this);
@@ -132,13 +132,43 @@ public class DataService implements
                 DataItem item = event.getDataItem();
                 DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
                 if (item.getUri().getPath().equals(PATH_RESPONSE_FIND_BIKE)) {
-                    Log.d(LOG_TAG, "PATH_RESPONSE_FIND_BIKE response!");
+                    handleFindBikeResponse(dataMap);
                 } else if (item.getUri().getPath().equals(PATH_RESPONSE_FIND_DOCK)) {
-                    Log.d(LOG_TAG, "PATH_RESPONSE_FIND_DOCK response!");
+                    handleFindDockResponse(dataMap);
                 } else if (item.getUri().getPath().equals(PATH_RESPONSE_GET_STATUS)) {
-                    Log.d(LOG_TAG, "PATH_RESPONSE_GET_STATUS response!");
+                    handleGetStatusResponse(dataMap);
                 }
             }
         }
+    }
+
+    /*
+     * Handle responses
+     */
+
+    private void handleFindBikeResponse(DataMap dataMap) {
+        Log.d(LOG_TAG, "handleFindBikeResponse");
+        String text = dataMap.getString(KEY_TEXT);
+        double latitude = dataMap.getDouble(KEY_LATITUDE);
+        double longitude = dataMap.getDouble(KEY_LONGITUDE);
+        Log.d(LOG_TAG, text);
+        Log.d(LOG_TAG, String.valueOf(latitude));
+        Log.d(LOG_TAG, String.valueOf(longitude));
+    }
+
+    private void handleFindDockResponse(DataMap dataMap) {
+        Log.d(LOG_TAG, "handleFindDockResponse");
+        String text = dataMap.getString(KEY_TEXT);
+        double latitude = dataMap.getDouble(KEY_LATITUDE);
+        double longitude = dataMap.getDouble(KEY_LONGITUDE);
+        Log.d(LOG_TAG, text);
+        Log.d(LOG_TAG, String.valueOf(latitude));
+        Log.d(LOG_TAG, String.valueOf(longitude));
+    }
+
+    private void handleGetStatusResponse(DataMap dataMap) {
+        Log.d(LOG_TAG, "handleFindDockResponse");
+        String text = dataMap.getString(KEY_TEXT);
+        Log.d(LOG_TAG, text);
     }
 }

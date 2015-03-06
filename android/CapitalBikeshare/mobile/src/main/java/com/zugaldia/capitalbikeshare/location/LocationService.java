@@ -42,13 +42,13 @@ public class LocationService implements
      * Start & stop the connection to the client
      */
 
-    public void onStart() {
-        Log.d(LOG_TAG, "onStart");
+    public void onResume() {
+        Log.d(LOG_TAG, "onResume");
         mGoogleApiClient.connect();
     }
 
-    public void onStop() {
-        Log.d(LOG_TAG, "onStop");
+    public void onPause() {
+        Log.d(LOG_TAG, "onPause");
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }

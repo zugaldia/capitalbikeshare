@@ -103,15 +103,15 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        locationService.onStart();
+    public void onResume() {
+        super.onResume();
+        locationService.onResume();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        locationService.onStop();
+    public void onPause() {
+        super.onPause();
+        locationService.onPause();
     }
 
     /*
