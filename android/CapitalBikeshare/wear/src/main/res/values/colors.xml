@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- We try to keep the BD brand style here too -->
+    <color name="red500">#F44336</color>
+    <color name="yellow500">#FFEB3B</color>
+    <color name="yellow50">#FFFDE7</color>
+
+</resources>
