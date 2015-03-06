@@ -174,7 +174,7 @@ public class MainFragment extends Fragment {
         textDocks.setText("Finding you a dock...");
         apiService.getClosestDock(latitude, longitude, new ClosestDockCallback());
 
-        textSummary.setText("Getting you a situation summary...");
+        textSummary.setText("Getting you the situation summary...");
         apiService.getStatus(latitude, longitude, new StatusCallback());
     }
 
@@ -189,16 +189,10 @@ public class MainFragment extends Fragment {
             if (closestResponse == null || closestResponse.code != 200) {
                 textBikes.setText("Oh noes, we couldn't find you a bike nearby.");
             } else {
-                // Track station
                 targetBike = closestResponse;
-
-                // Build message
-                String message = String.format(
-                        "We found %s on %s, which is %s. Tap me to navigate.",
-                        closestResponse.station.getBikesText(),
-                        closestResponse.station.name,
-                        closestResponse.station.getTimeText());
-                textBikes.setText(message);
+                textBikes.setText(
+                        closestResponse.station.getBikesSummary()
+                                + " Tap me to navigate.");
             }
         }
 
@@ -215,16 +209,10 @@ public class MainFragment extends Fragment {
             if (closestResponse == null || closestResponse.code != 200) {
                 textDocks.setText("Oh noes, we couldn't find you a dock nearby.");
             } else {
-                // Track station
                 targetDock = closestResponse;
-
-                // Build message
-                String message = String.format(
-                        "We found %s on %s, which is %s. Tap me to navigate.",
-                        closestResponse.station.getDocksText(),
-                        closestResponse.station.name,
-                        closestResponse.station.getTimeText());
-                textDocks.setText(message);
+                textDocks.setText(
+                        closestResponse.station.getDocksSummary()
+                                + " Tap me to navigate.");
             }
         }
 
@@ -241,13 +229,7 @@ public class MainFragment extends Fragment {
             if (statusResponse == null || statusResponse.code != 200) {
                 textSummary.setText("Sorry, I got nothing.");
             } else {
-                // Build message
-                String message = String.format(
-                        "We found %s with %s and %s in the vecinity.",
-                        statusResponse.status.getStationsText(),
-                        statusResponse.status.getBikesText(),
-                        statusResponse.status.getDocksText());
-                textSummary.setText(message);
+                textSummary.setText(statusResponse.status.getSummary());
             }
         }
 

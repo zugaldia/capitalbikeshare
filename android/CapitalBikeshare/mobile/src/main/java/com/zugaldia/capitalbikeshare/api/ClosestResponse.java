@@ -32,5 +32,21 @@ public class ClosestResponse {
                 return String.format("about a %.0f minutes walk", distance_min);
             }
         }
+
+        public String getBikesSummary() {
+            return String.format(
+                    "We found %s on %s, which is %s.",
+                    getBikesText(),
+                    name,
+                    getTimeText());
+        }
+
+        public String getDocksSummary() {
+            return String.format(
+                    "We found %s on %s, which is %s.",
+                    getDocksText(),
+                    name,
+                    getTimeText());
+        }
     }
 }

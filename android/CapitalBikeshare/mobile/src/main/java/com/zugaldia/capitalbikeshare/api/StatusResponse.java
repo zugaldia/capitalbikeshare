@@ -26,5 +26,13 @@ public class StatusResponse {
             if (stations == 0) { return "no stations"; }
             return (stations == 1 ? "1 station" : String.format("%d stations", stations));
         }
+
+        public String getSummary() {
+            return String.format(
+                    "We found %s with %s and %s in the vecinity.",
+                    getStationsText(),
+                    getBikesText(),
+                    getDocksText());
+        }
     }
 }
