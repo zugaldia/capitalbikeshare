@@ -15,6 +15,7 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
+import com.zugaldia.capitalbikeshare.AppConstants;
 
 import java.util.Date;
 
@@ -28,24 +29,13 @@ public class DataService implements
 
     private final String LOG_TAG = DataService.class.getSimpleName();
 
-    public static final String PATH_REQUEST_FIND_BIKE = "/request/findBike";
-    public static final String PATH_REQUEST_FIND_DOCK = "/request/findDock";
-    public static final String PATH_REQUEST_GET_STATUS = "/request/getStatus";
-    public static final String PATH_RESPONSE_FIND_BIKE = "/response/findBike";
-    public static final String PATH_RESPONSE_FIND_DOCK = "/response/findDock";
-    public static final String PATH_RESPONSE_GET_STATUS = "/response/getStatus";
-
-    public static final String KEY_LATITUDE = "LATITUDE";
-    public static final String KEY_LONGITUDE = "LONGITUDE";
-    public static final String KEY_TEXT = "TEXT";
-    public static final String KEY_TIMESTAMP = "TIMESTAMP";
-
-
     private Context context;
+    private ResponseCallback responseCallback;
     private GoogleApiClient mGoogleApiClient;
 
-    public DataService(Context context) {
+    public DataService(Context context, ResponseCallback responseCallback) {
         this.context = context;
+        this.responseCallback = responseCallback;
         buildGoogleApiClient();
     }
 
@@ -112,9 +102,9 @@ public class DataService implements
 
     public void putRequest(String path, double latitude, double longitude) {
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(path);
-        putDataMapRequest.getDataMap().putDouble(KEY_LATITUDE, latitude);
-        putDataMapRequest.getDataMap().putDouble(KEY_LONGITUDE, longitude);
-        putDataMapRequest.getDataMap().putLong(KEY_TIMESTAMP, new Date().getTime());
+        putDataMapRequest.getDataMap().putDouble(AppConstants.KEY_LATITUDE, latitude);
+        putDataMapRequest.getDataMap().putDouble(AppConstants.KEY_LONGITUDE, longitude);
+        putDataMapRequest.getDataMap().putLong(AppConstants.KEY_TIMESTAMP, new Date().getTime());
         PutDataRequest putDataRequest = putDataMapRequest.asPutDataRequest();
         Wearable.DataApi.putDataItem(mGoogleApiClient, putDataRequest);
     }
@@ -131,44 +121,8 @@ public class DataService implements
                 // DataItem changed
                 DataItem item = event.getDataItem();
                 DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
-                if (item.getUri().getPath().equals(PATH_RESPONSE_FIND_BIKE)) {
-                    handleFindBikeResponse(dataMap);
-                } else if (item.getUri().getPath().equals(PATH_RESPONSE_FIND_DOCK)) {
-                    handleFindDockResponse(dataMap);
-                } else if (item.getUri().getPath().equals(PATH_RESPONSE_GET_STATUS)) {
-                    handleGetStatusResponse(dataMap);
-                }
+                this.responseCallback.success(item.getUri().getPath(), dataMap);
             }
         }
-    }
-
-    /*
-     * Handle responses
-     */
-
-    private void handleFindBikeResponse(DataMap dataMap) {
-        Log.d(LOG_TAG, "handleFindBikeResponse");
-        String text = dataMap.getString(KEY_TEXT);
-        double latitude = dataMap.getDouble(KEY_LATITUDE);
-        double longitude = dataMap.getDouble(KEY_LONGITUDE);
-        Log.d(LOG_TAG, text);
-        Log.d(LOG_TAG, String.valueOf(latitude));
-        Log.d(LOG_TAG, String.valueOf(longitude));
-    }
-
-    private void handleFindDockResponse(DataMap dataMap) {
-        Log.d(LOG_TAG, "handleFindDockResponse");
-        String text = dataMap.getString(KEY_TEXT);
-        double latitude = dataMap.getDouble(KEY_LATITUDE);
-        double longitude = dataMap.getDouble(KEY_LONGITUDE);
-        Log.d(LOG_TAG, text);
-        Log.d(LOG_TAG, String.valueOf(latitude));
-        Log.d(LOG_TAG, String.valueOf(longitude));
-    }
-
-    private void handleGetStatusResponse(DataMap dataMap) {
-        Log.d(LOG_TAG, "handleFindDockResponse");
-        String text = dataMap.getString(KEY_TEXT);
-        Log.d(LOG_TAG, text);
     }
 }

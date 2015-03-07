@@ -6,4 +6,7 @@
     <color name="yellow500">#FFEB3B</color>
     <color name="yellow50">#FFFDE7</color>
 
+    <!-- Progress bar -->
+    <color name="transparent">#80000000</color>
+
 </resources>

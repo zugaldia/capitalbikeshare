@@ -1,14 +1,19 @@
 package com.zugaldia.capitalbikeshare;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.wearable.view.WearableListView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
+import com.google.android.gms.wearable.DataMap;
 import com.zugaldia.capitalbikeshare.data.DataService;
+import com.zugaldia.capitalbikeshare.data.ResponseCallback;
 import com.zugaldia.capitalbikeshare.location.LocationService;
 
 import java.util.List;
@@ -32,6 +37,10 @@ public class MainActivity extends Activity implements WearableListView.ClickList
     private DataService dataService;
     private LocationService locationService;
 
+    // UI elements
+    private ProgressBar progressBar;
+    private WearableListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreate");
@@ -39,13 +48,16 @@ public class MainActivity extends Activity implements WearableListView.ClickList
 
         setContentView(R.layout.common_layout);
 
+        // Progress bar (when loading content)
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
         // Main list
-        WearableListView listView = (WearableListView) findViewById(R.id.wearable_list);
+        listView = (WearableListView) findViewById(R.id.wearable_list);
         listView.setAdapter(new WearableListViewAdapter(this, elements));
         listView.setClickListener(this);
 
         // Our services
-        dataService = new DataService(this);
+        dataService = new DataService(this, new ActivityResponseCallback());
         locationService = new LocationService(this);
     }
 
@@ -55,6 +67,10 @@ public class MainActivity extends Activity implements WearableListView.ClickList
         super.onResume();
         dataService.onResume();
         locationService.onResume();
+
+        // Makes sure the UI is in a good state
+        listView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
 
         // I don't like the UI as it is right now with voice recognition. Though the code
         // is here, let's rethink it before enabling it.
@@ -124,6 +140,10 @@ public class MainActivity extends Activity implements WearableListView.ClickList
     public void onClick(WearableListView.ViewHolder viewHolder) {
         Log.d(LOG_TAG, "onClick");
 
+        // Show progress bar (and hide list)
+        progressBar.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.GONE);
+
         Integer tag = (Integer) viewHolder.itemView.getTag();
         if (tag == OPTION_FIND_BIKE) {
             handleFindBike();
@@ -145,31 +165,76 @@ public class MainActivity extends Activity implements WearableListView.ClickList
 
     private void handleFindBike() {
         Log.d(LOG_TAG, "handleFindBike");
-        Location location = locationService.getLastLocation();
+        Location location = getLocation();
         if (location != null) {
             dataService.putRequest(
-                    DataService.PATH_REQUEST_FIND_BIKE,
+                    AppConstants.PATH_REQUEST_FIND_BIKE,
                     location.getLatitude(), location.getLongitude());
         }
     }
 
     private void handleFindDock() {
         Log.d(LOG_TAG, "handleFindDock");
-        Location location = locationService.getLastLocation();
+        Location location = getLocation();
         if (location != null) {
             dataService.putRequest(
-                    DataService.PATH_REQUEST_FIND_DOCK,
+                    AppConstants.PATH_REQUEST_FIND_DOCK,
                     location.getLatitude(), location.getLongitude());
         }
     }
 
     private void handleGetStatus() {
         Log.d(LOG_TAG, "handleGetStatus");
-        Location location = locationService.getLastLocation();
+        Location location = getLocation();
         if (location != null) {
             dataService.putRequest(
-                    DataService.PATH_REQUEST_GET_STATUS,
+                    AppConstants.PATH_REQUEST_GET_STATUS,
                     location.getLatitude(), location.getLongitude());
+        }
+    }
+
+    /*
+     * Get location
+     */
+
+    public Location getLocation() {
+        // This can be null, we should wait one second or so if that's the case
+        Location location = locationService.getLastLocation();
+        return location;
+    }
+
+    /*
+     * API response callback
+     */
+
+    class ActivityResponseCallback implements ResponseCallback {
+
+        @Override
+        public void success(String path, DataMap dataMap) {
+            // Get data
+            String text = dataMap.getString(AppConstants.KEY_TEXT);
+            double latitude = dataMap.getDouble(AppConstants.KEY_LATITUDE);
+            double longitude = dataMap.getDouble(AppConstants.KEY_LONGITUDE);
+
+            // Debug
+            Log.d(LOG_TAG, "path: " + path);
+            Log.d(LOG_TAG, "text: " + text);
+            Log.d(LOG_TAG, "latitude: " + String.valueOf(latitude));
+            Log.d(LOG_TAG, "longitude: " + String.valueOf(longitude));
+
+            // Choose a title
+            String title = "Status";
+            if (path.equals(AppConstants.PATH_RESPONSE_FIND_BIKE)) {
+                title = "Bikes";
+            } else if (path.equals(AppConstants.PATH_RESPONSE_FIND_DOCK)) {
+                title = "Docks";
+            }
+
+            // Launch new activity (card)
+            Intent intent = new Intent(getApplicationContext(), ResponseActivity.class);
+            intent.putExtra(AppConstants.INTENT_EXTRA_CARD_TITLE, title);
+            intent.putExtra(AppConstants.INTENT_EXTRA_CARD_DESCRIPTION, text);
+            startActivity(intent);
         }
     }
 }
