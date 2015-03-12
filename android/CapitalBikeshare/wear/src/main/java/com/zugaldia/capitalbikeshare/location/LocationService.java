@@ -13,6 +13,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.zugaldia.capitalbikeshare.AppConstants;
 
 /**
  * A location service tailored for the wearable. Differently to the phone feature,
@@ -116,13 +117,14 @@ public class LocationService implements
             return this.location;
         }
 
-        // Try getLastLocation() instead
-        if (!mGoogleApiClient.isConnected()) {
-            Log.d(LOG_TAG, "Cannot get location, connection is not ready.");
-            return null;
+        // Try getLastLocation() otherwise
+        if (mGoogleApiClient.isConnected()) {
+            return LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
         }
 
-        return LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        // Nothing
+        return null;
     }
 
     /*
@@ -134,8 +136,8 @@ public class LocationService implements
 
         LocationRequest locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(500)
-                .setFastestInterval(100);
+                .setInterval(AppConstants.UPDATE_INTERVAL_MS)
+                .setFastestInterval(AppConstants.FASTEST_INTERVAL_MS);
 
         LocationServices.FusedLocationApi
                 .requestLocationUpdates(mGoogleApiClient, locationRequest, this)

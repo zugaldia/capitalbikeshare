@@ -101,6 +101,7 @@ public class DataService implements
      */
 
     public void putRequest(String path, double latitude, double longitude) {
+        Log.d(LOG_TAG, "Sending request: " + path);
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(path);
         putDataMapRequest.getDataMap().putDouble(AppConstants.KEY_LATITUDE, latitude);
         putDataMapRequest.getDataMap().putDouble(AppConstants.KEY_LONGITUDE, longitude);
@@ -118,10 +119,26 @@ public class DataService implements
         // Loop through the events
         for (DataEvent event : dataEvents) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
-                // DataItem changed
                 DataItem item = event.getDataItem();
+
+                // Ignore requests, we only want responses
+                String path = item.getUri().getPath();
+                Log.d(LOG_TAG, "Received path: " + path);
+                if (path.equals(AppConstants.PATH_REQUEST_FIND_BIKE)
+                        || path.equals(AppConstants.PATH_REQUEST_FIND_DOCK)
+                        || path.equals(AppConstants.PATH_REQUEST_GET_STATUS)) {
+                    return;
+                }
+
                 DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
-                this.responseCallback.success(item.getUri().getPath(), dataMap);
+                String text = dataMap.getString(AppConstants.KEY_TEXT);
+                if (text.equals("ERROR")) {
+                    Log.d(LOG_TAG, "Response error");
+                    this.responseCallback.error(path);
+                } else {
+                    Log.d(LOG_TAG, "Response success");
+                    this.responseCallback.success(path, dataMap);
+                }
             }
         }
     }

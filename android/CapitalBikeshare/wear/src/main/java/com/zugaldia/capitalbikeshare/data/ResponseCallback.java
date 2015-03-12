@@ -8,5 +8,6 @@ import com.google.android.gms.wearable.DataMap;
 public interface ResponseCallback {
 
     public void success(String path, DataMap dataMap);
+    public void error(String path);
 
 }

@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import com.google.android.gms.wearable.DataMap;
 import com.zugaldia.capitalbikeshare.data.DataService;
 import com.zugaldia.capitalbikeshare.data.ResponseCallback;
+import com.zugaldia.capitalbikeshare.location.LocationCallback;
 import com.zugaldia.capitalbikeshare.location.LocationService;
 
 import java.util.List;
@@ -73,7 +74,8 @@ public class MainActivity extends Activity implements WearableListView.ClickList
         progressBar.setVisibility(View.GONE);
 
         // I don't like the UI as it is right now with voice recognition. Though the code
-        // is here, let's rethink it before enabling it.
+        // is here, let's rethink it before enabling it. I'm leaning towards a floating
+        // mic on the top right of the screen.
         //displaySpeechRecognizer();
     }
 
@@ -124,11 +126,11 @@ public class MainActivity extends Activity implements WearableListView.ClickList
 
         // We should probably be more flexible than this
         if (command.toLowerCase().trim().equals("find me a bike")) {
-            handleFindBike();
+            launchAction(OPTION_FIND_BIKE);
         } else if (command.toLowerCase().trim().equals("find me a dock")) {
-            handleFindDock();
+            launchAction(OPTION_FIND_DOCK);
         } else if (command.toLowerCase().trim().equals("get the status")) {
-            handleGetStatus();
+            launchAction(OPTION_GET_STATUS);
         }
     }
 
@@ -144,14 +146,9 @@ public class MainActivity extends Activity implements WearableListView.ClickList
         progressBar.setVisibility(View.VISIBLE);
         listView.setVisibility(View.GONE);
 
+        // Get the tag and launch
         Integer tag = (Integer) viewHolder.itemView.getTag();
-        if (tag == OPTION_FIND_BIKE) {
-            handleFindBike();
-        } else if (tag == OPTION_FIND_DOCK) {
-            handleFindDock();
-        } else if (tag == OPTION_GET_STATUS) {
-            handleGetStatus();
-        }
+        launchAction(tag);
     }
 
     @Override
@@ -163,44 +160,90 @@ public class MainActivity extends Activity implements WearableListView.ClickList
      * Handle actions
      */
 
-    private void handleFindBike() {
+    private void launchAction(final int tag) {
+        Log.d(LOG_TAG, "Getting location for action: " + String.valueOf(tag));
+
+        // Get location
+        getLocation(new LocationCallback() {
+
+            @Override
+            public void success(Location location) {
+                Log.d(LOG_TAG, "Location found.");
+                if (tag == OPTION_FIND_BIKE) {
+                    handleFindBike(location);
+                } else if (tag == OPTION_FIND_DOCK) {
+                    handleFindDock(location);
+                } else if (tag == OPTION_GET_STATUS) {
+                    handleGetStatus(location);
+                }
+            }
+
+            @Override
+            public void error() {
+                Log.d(LOG_TAG, "Location NOT found.");
+                launchErrorCard(
+                        "We couldn't get your location, please try again later.");
+            }
+        });
+    }
+
+    private void handleFindBike(Location location) {
         Log.d(LOG_TAG, "handleFindBike");
-        Location location = getLocation();
-        if (location != null) {
-            dataService.putRequest(
-                    AppConstants.PATH_REQUEST_FIND_BIKE,
-                    location.getLatitude(), location.getLongitude());
-        }
+        dataService.putRequest(
+                AppConstants.PATH_REQUEST_FIND_BIKE,
+                location.getLatitude(), location.getLongitude());
     }
 
-    private void handleFindDock() {
+    private void handleFindDock(Location location) {
         Log.d(LOG_TAG, "handleFindDock");
-        Location location = getLocation();
-        if (location != null) {
-            dataService.putRequest(
-                    AppConstants.PATH_REQUEST_FIND_DOCK,
-                    location.getLatitude(), location.getLongitude());
-        }
+        dataService.putRequest(
+                AppConstants.PATH_REQUEST_FIND_DOCK,
+                location.getLatitude(), location.getLongitude());
     }
 
-    private void handleGetStatus() {
+    private void handleGetStatus(Location location) {
         Log.d(LOG_TAG, "handleGetStatus");
-        Location location = getLocation();
-        if (location != null) {
-            dataService.putRequest(
-                    AppConstants.PATH_REQUEST_GET_STATUS,
-                    location.getLatitude(), location.getLongitude());
-        }
+        dataService.putRequest(
+                AppConstants.PATH_REQUEST_GET_STATUS,
+                location.getLatitude(), location.getLongitude());
     }
 
     /*
-     * Get location
+     * Get the location. Because we request location updates every UPDATE_INTERVAL_MS, it's possible
+     * that when the user first launches the app, we don't a have fresh location yet. To avoid
+     * that, we try up to LOCATION_MAX_ATTEMPTS to give the service a chance to get a location.
+     * (Is there a better pattern?)
      */
 
-    public Location getLocation() {
-        // This can be null, we should wait one second or so if that's the case
-        Location location = locationService.getLastLocation();
-        return location;
+    public void getLocation(final LocationCallback callback) {
+        // Run in a separate thread to keep the UI responsive
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Loop
+                int attempt = 0;
+                Location location = null;
+                while (location == null && attempt < AppConstants.LOCATION_MAX_ATTEMPTS) {
+                    attempt =+ 1;
+                    Log.d(LOG_TAG, "Attempt #" + String.valueOf(attempt));
+                    location = locationService.getLastLocation();
+                    if (location == null) {
+                        try {
+                            Thread.sleep(AppConstants.UPDATE_INTERVAL_MS);
+                        } catch (InterruptedException e) {
+                            Log.d(LOG_TAG, "Thread.sleep() was interrupted.");
+                        }
+                    }
+                }
+
+                // Resolve
+                if (location == null) {
+                    callback.error();
+                } else {
+                    callback.success(location);
+                }
+            }
+        }).start();
     }
 
     /*
@@ -236,5 +279,19 @@ public class MainActivity extends Activity implements WearableListView.ClickList
             intent.putExtra(AppConstants.INTENT_EXTRA_CARD_DESCRIPTION, text);
             startActivity(intent);
         }
+
+        @Override
+        public void error(String path) {
+            launchErrorCard(
+                    "We couldn't get the info from Capital Bikeshare, please try again later.");
+        }
+    }
+
+    // Show an error message with a consistent UI
+    public void launchErrorCard(String message) {
+        Intent intent = new Intent(getApplicationContext(), ResponseActivity.class);
+        intent.putExtra(AppConstants.INTENT_EXTRA_CARD_TITLE, "Error");
+        intent.putExtra(AppConstants.INTENT_EXTRA_CARD_DESCRIPTION, message);
+        startActivity(intent);
     }
 }

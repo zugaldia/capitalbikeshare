@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
 
         // About page
         if (id == R.id.action_about) {
-            Toast toast = Toast.makeText(this, "Nothing here just yet.", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, "Nothing here, yet.", Toast.LENGTH_LONG);
             toast.show();
             return true;
         }
