@@ -229,7 +229,8 @@ public class MainFragment extends Fragment {
             if (statusResponse == null || statusResponse.code != 200) {
                 textSummary.setText("Sorry, I got nothing.");
             } else {
-                textSummary.setText(statusResponse.status.getSummary());
+                textSummary.setText(statusResponse.status.getSummary()
+                        + " Tap me to refresh.");
             }
         }
 
