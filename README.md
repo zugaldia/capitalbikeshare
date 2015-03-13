@@ -24,6 +24,6 @@ Please file any issues or ideas here: https://github.com/zugaldia/capitalbikesha
 
 ## Disclaimer
 
-Please note that this app is not officially affiliated with Capital Bikeshare.
+Please note that this app is not officially affiliated with [Capital Bikeshare](http://www.capitalbikeshare.com).
 
 This app is completely free and fully Open Source under the [Apache License](https://github.com/zugaldia/capitalbikeshare/blob/master/LICENSE).
