@@ -6,11 +6,12 @@ Capital Bikeshare for Wear lets you find the closest available bike, and dock, d
 
 ## Features
 
-* The app works both on your watch, and your phone.
+* Works both on your watch, and on your phone.
 * Compatible with square and round screens.
-* It lets you find the closest available bike. 
-* It lets you find the closest available dock.
-* It also gives you a summary of how many stations, bikes, and docks are nearby.
+* Lets you find the closest available bike. 
+* Lets you find the closest available dock.
+* Gives you a summary of how many stations, bikes, and docks are nearby.
+* Uses the [official data](https://github.com/zugaldia/capitalbikeshare/tree/master/appengine) from Capital Bikeshare for Washington, DC.
 
 ## Permissions
 
@@ -23,6 +24,6 @@ Please file any issues or ideas here: https://github.com/zugaldia/capitalbikesha
 
 ## Disclaimer
 
-Please note that this app is not officially affiliated with Capital Bikeshare, although it uses the [official updated data](https://github.com/zugaldia/capitalbikeshare/tree/master/appengine) that Capital Bikeshare publishes through their website for Washington, DC.
+Please note that this app is not officially affiliated with [Capital Bikeshare](http://www.capitalbikeshare.com).
 
 This app is completely free and fully Open Source under the [Apache License](https://github.com/zugaldia/capitalbikeshare/blob/master/LICENSE).
