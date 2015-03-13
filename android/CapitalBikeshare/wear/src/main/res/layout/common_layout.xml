@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    android:background="@color/red500"
     tools:context=".MainActivity">
 
     <FrameLayout
         android:id="@+id/frame_layout"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:background="@color/red500"
-        app:layout_box="left|bottom|right">
+        app:layout_box="all">
 
         <android.support.wearable.view.WearableListView
             android:id="@+id/wearable_list"
@@ -25,6 +25,7 @@
             android:id="@+id/progress_bar"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:gravity="center"
             android:indeterminate="true"
             android:visibility="gone">
         </ProgressBar>
