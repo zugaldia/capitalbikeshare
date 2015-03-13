@@ -15,6 +15,12 @@ public class ClosestResponse {
         public int nb_bikes;
         public int nb_empty_docks;
 
+        public boolean isValid() {
+            if (name == null) { return false; }
+            if (latitude == 0.0 && longitude == 0.0) { return false; }
+            return true;
+        }
+
         public String getBikesText() {
             return (nb_bikes == 1 ? "1 bike" : String.format("%d bikes", nb_bikes));
         }
@@ -34,6 +40,7 @@ public class ClosestResponse {
         }
 
         public String getBikesSummary() {
+            if (nb_bikes == 0) { return "Sorry, we found no bikes."; }
             return String.format(
                     "We found %s on %s, which is %s.",
                     getBikesText(),
@@ -42,6 +49,7 @@ public class ClosestResponse {
         }
 
         public String getDocksSummary() {
+            if (nb_empty_docks == 0) { return "Sorry, we found no docks."; }
             return String.format(
                     "We found %s on %s, which is %s.",
                     getDocksText(),

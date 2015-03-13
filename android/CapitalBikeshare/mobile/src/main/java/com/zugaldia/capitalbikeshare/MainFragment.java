@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zugaldia.capitalbikeshare.api.ApiService;
 import com.zugaldia.capitalbikeshare.api.ClosestResponse;
@@ -72,9 +73,7 @@ public class MainFragment extends Fragment {
         textBikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (targetBike != null) {
-                    navigate(targetBike);
-                }
+                navigate(targetBike);
             }
         });
 
@@ -83,9 +82,7 @@ public class MainFragment extends Fragment {
         textDocks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (targetDock != null) {
-                    navigate(targetDock);
-                }
+                navigate(targetDock);
             }
         });
 
@@ -132,6 +129,14 @@ public class MainFragment extends Fragment {
      */
 
     private void navigate(ClosestResponse response) {
+        // Only navigate if we have a station to go to
+        if (response == null || !response.station.isValid() ) {
+            String message = "Sorry, we couldn't find any stations available.";
+            Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
         String uri = null;
         try {
             uri = String.format(
@@ -155,6 +160,10 @@ public class MainFragment extends Fragment {
 
     private void refreshData() {
         textSummary.setText("Loading...");
+
+        // Reset the data
+        targetBike = null;
+        targetDock = null;
 
         // Get the latest location
         Location location = this.locationService.getLastLocation();
@@ -190,15 +199,16 @@ public class MainFragment extends Fragment {
                 textBikes.setText("Oh noes, we couldn't find you a bike nearby.");
             } else {
                 targetBike = closestResponse;
-                textBikes.setText(
-                        closestResponse.station.getBikesSummary()
-                                + " Tap me to navigate.");
+                String summary = closestResponse.station.getBikesSummary();
+                if(closestResponse.station.isValid()) { summary += " Tap me to navigate."; }
+                textBikes.setText(summary);
             }
         }
 
         @Override
         public void failure(RetrofitError error) {
-            textBikes.setText("Failed: " + error.toString());
+            Log.d(LOG_TAG, "ClosestBikeCallback failed: " + error.toString());
+            textBikes.setText("Oh noes, we couldn't get you the data.");
         }
     }
 
@@ -210,15 +220,16 @@ public class MainFragment extends Fragment {
                 textDocks.setText("Oh noes, we couldn't find you a dock nearby.");
             } else {
                 targetDock = closestResponse;
-                textDocks.setText(
-                        closestResponse.station.getDocksSummary()
-                                + " Tap me to navigate.");
+                String summary = closestResponse.station.getDocksSummary();
+                if(closestResponse.station.isValid()) { summary += " Tap me to navigate."; }
+                textDocks.setText(summary);
             }
         }
 
         @Override
         public void failure(RetrofitError error) {
-            textDocks.setText("Failed: " + error.toString());
+            Log.d(LOG_TAG, "ClosestDockCallback failed: " + error.toString());
+            textDocks.setText("Oh noes, we couldn't get you the data");
         }
     }
 
@@ -236,10 +247,10 @@ public class MainFragment extends Fragment {
 
         @Override
         public void failure(RetrofitError error) {
+            Log.d(LOG_TAG, "StatusCallback failed: " + error.toString());
             textSummary.setText(
-                    String.format(
-                            "Oops, something went wrong (%s). Tap me to retry.",
-                            error.toString()));
+                    "Our server is misbehaving (or your Internet connection is down?), "
+                            + "please tap me again in a few to retry.");
         }
     }
 
