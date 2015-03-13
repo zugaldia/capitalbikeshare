@@ -2,8 +2,7 @@
 
 Capital Bikeshare for Wear lets you find the closest available bike, and dock, directly from your Android Wear smartwatch.
 
-![Screenshot 1](https://raw.githubusercontent.com/zugaldia/capitalbikeshare/master/assets/wear1_device.png)
-![Screenshot 2](https://raw.githubusercontent.com/zugaldia/capitalbikeshare/master/assets/wear3_device.png)
+![Screenshot](https://raw.githubusercontent.com/zugaldia/capitalbikeshare/master/assets/github_readme.png)
 
 ## Features
 
