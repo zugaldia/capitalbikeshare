@@ -1,7 +1,6 @@
 package com.zugaldia.capitalbikeshare;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -9,7 +8,7 @@ import android.speech.RecognizerIntent;
 import android.support.wearable.view.WearableListView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.wearable.DataMap;
 import com.zugaldia.capitalbikeshare.data.DataService;
@@ -39,7 +38,7 @@ public class MainActivity extends Activity implements WearableListView.ClickList
     private LocationService locationService;
 
     // UI elements
-    private ProgressBar progressBar;
+    private LinearLayout progressBarContainer;
     private WearableListView listView;
 
     @Override
@@ -50,7 +49,7 @@ public class MainActivity extends Activity implements WearableListView.ClickList
         setContentView(R.layout.common_layout);
 
         // Progress bar (when loading content)
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressBarContainer = (LinearLayout) findViewById(R.id.progress_bar_container);
 
         // Main list
         listView = (WearableListView) findViewById(R.id.wearable_list);
@@ -71,7 +70,7 @@ public class MainActivity extends Activity implements WearableListView.ClickList
 
         // Makes sure the UI is in a good state
         listView.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
+        progressBarContainer.setVisibility(View.GONE);
 
         // I don't like the UI as it is right now with voice recognition. Though the code
         // is here, let's rethink it before enabling it. I'm leaning towards a floating
@@ -143,7 +142,7 @@ public class MainActivity extends Activity implements WearableListView.ClickList
         Log.d(LOG_TAG, "onClick");
 
         // Show progress bar (and hide list)
-        progressBar.setVisibility(View.VISIBLE);
+        progressBarContainer.setVisibility(View.VISIBLE);
         listView.setVisibility(View.GONE);
 
         // Get the tag and launch
@@ -224,7 +223,7 @@ public class MainActivity extends Activity implements WearableListView.ClickList
                 int attempt = 0;
                 Location location = null;
                 while (location == null && attempt < AppConstants.LOCATION_MAX_ATTEMPTS) {
-                    attempt =+ 1;
+                    attempt += 1;
                     Log.d(LOG_TAG, "Attempt #" + String.valueOf(attempt));
                     location = locationService.getLastLocation();
                     if (location == null) {
