@@ -15,8 +15,8 @@ Provides the same information as the XML file mentioned above, but in JSON forma
 ```
 
 {
-    "code": 200, 
-    "messages": [], 
+    "status_code": 200, 
+    "status_message": "OK",
     "status_feed": {
         "last_update": "1425490067575", 
         "stations": [
@@ -70,8 +70,8 @@ Optionally, you can add `latitude` and `longitude` fields (which provides an enh
 ```
 
 {
-    "code": 200, 
-    "messages": [], 
+    "status_code": 200, 
+    "status_message": "OK",
     "status_feed": {
         "last_update": "1425490067575", 
         "stations": [
@@ -131,8 +131,8 @@ Gives a summary of the stations situation around you. This gives the user an ide
 
 ```
 {
-    "code": 200, 
-    "messages": [], 
+    "status_code": 200, 
+    "status_message": "OK",
     "status": {
         "bikes": 58, 
         "docks": 60, 
@@ -153,8 +153,8 @@ Finds the closest bike available to a given location.
 
 ```
 {
-    "code": 200, 
-    "messages": [], 
+    "status_code": 200, 
+    "status_message": "OK",
     "station": {
         "distance_m": 264.0, 
         "distance_min": 3.0, 
@@ -189,8 +189,8 @@ Finds the closest dock available to a given location.
 
 ```
 {
-    "code": 200, 
-    "messages": [], 
+    "status_code": 200, 
+    "status_message": "OK",
     "station": {
         "distance_m": 176.0, 
         "distance_min": 2.0, 
