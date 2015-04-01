@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import redirect
 from flask.views import MethodView
 
 import logging
@@ -6,4 +6,4 @@ import logging
 
 class WebLandingView(MethodView):
     def get(self):
-        return render_template('landing.html')
+        return redirect('https://github.com/zugaldia/capitalbikeshare')
