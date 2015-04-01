@@ -1,0 +1,34 @@
+'''
+Use scripts/generate.py to create a good Flask SECRET_KEY.
+'''
+
+PROJECT_BUILD = 1
+PROJECT_STAGE = 'development'
+
+
+# Common config
+class _BaseConfig():
+    IS_DEVELOPMENT = (PROJECT_STAGE == 'development')
+    IS_PRODUCTION = (PROJECT_STAGE == 'production')
+    SUPERUSER_EMAIL = ''
+    API_BASE = '/api/v1'
+    FLASK = {
+        'SECRET_KEY': '',
+        'DEBUG': IS_DEVELOPMENT,
+        'TESTING': IS_DEVELOPMENT}
+
+
+# Specific for development
+class _DevelopmentConfig(_BaseConfig):
+    SENTRY_DSN = None
+
+
+# Specific for production
+class _ProductionConfig(_BaseConfig):
+    SENTRY_DSN = 'sync+https://'
+
+
+# Finally export the relevant object
+Config = (
+    _DevelopmentConfig if PROJECT_STAGE == 'development'
+    else _ProductionConfig)

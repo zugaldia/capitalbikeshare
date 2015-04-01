@@ -1,0 +1,45 @@
+application: new-project-template
+version: v1
+runtime: python27
+api_version: 1
+threadsafe: true
+module: default
+
+builtins:
+- deferred: on
+- remote_api: on
+
+handlers:
+
+# Static content
+- url: /favicon\.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon\.ico
+  secure: optional
+- url: /static
+  static_dir: static
+  secure: optional
+
+# Cron handler
+- url: /_app/cron.*
+  script: handle_cron.app
+  login: admin
+
+# Queue handler
+- url: /_ah/queue/.*
+  script: handle_queue.app
+  login: admin
+
+# Web app
+- url: .*
+  script: handle_main.app
+  secure: optional
+
+# SSL is required by Raven
+libraries:
+- name: webapp2
+  version: "2.5.2"
+- name: pycrypto
+  version: "2.6"
+- name: ssl
+  version: "2.7"

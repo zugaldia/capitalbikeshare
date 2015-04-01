@@ -1,0 +1,26 @@
+application: new-project-template
+version: v1
+runtime: python27
+api_version: 1
+threadsafe: true
+module: api
+
+# For the API, we benefit that this is a different module and request to have
+# at least 1 instance always idle, and a max pending latency of just a second.
+automatic_scaling:
+  min_idle_instances: 1
+  max_pending_latency: 1s
+
+handlers:
+- url: .*
+  script: handle_main.app
+  secure: optional
+
+# SSL is required by Raven
+libraries:
+- name: webapp2
+  version: "2.5.2"
+- name: pycrypto
+  version: "2.6"
+- name: ssl
+  version: "2.7"

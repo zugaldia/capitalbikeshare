@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport"
+            content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+        <title>Appython</title>
+
+        <!-- Styles -->
+        <link href="/static/vendor/bower_components/ionic/css/ionic.css" rel="stylesheet">
+        <link href="/static/build/app.css" rel="stylesheet">
+
+        <!-- Globals -->
+        <script type="text/javascript">
+            window.webappConstants = {};
+            window.webappConstants.projectBuild = [[ g.PROJECT_BUILD ]];
+            window.webappConstants.projectStage = '[[ g.PROJECT_STAGE ]]';
+            window.webappConstants.hostname = '[[ g.HOSTNAME ]]';
+            window.webappConstants.apiBase = '[[ g.API_BASE ]]';
+        </script>
+
+        <!-- Scripts -->
+        <script src="/static/vendor/bower_components/ionic/js/ionic.bundle.js"></script>
+        <script src="/static/vendor/bower_components/moment/moment.js"></script>
+        <script src="/static/vendor/bower_components/lawnchair/src/Lawnchair.js"></script>
+        <script src="/static/vendor/bower_components/lawnchair/src/adapters/dom.js"></script>
+
+        <!-- App -->
+        <script src="/static/scripts/app.js"></script>
+        <script src="/static/scripts/controllers/main.js"></script>
+    </head>
+    <body ng-app="webapp">
+
+        <ion-nav-bar class="bar-calm">
+        </ion-nav-bar>
+
+        <ion-nav-view></ion-nav-view>
+
+    </body>
+</html>

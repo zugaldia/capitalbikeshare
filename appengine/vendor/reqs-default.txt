@@ -1,0 +1,5 @@
+# Default module requirements
+Flask
+Flask-Login
+Flask-RESTful
+raven[flask]

@@ -1,0 +1,8 @@
+cron:
+
+# Runs daily
+- description: daily
+  url: /_app/cron/daily
+  schedule: every 24 hours
+  timezone: America/New_York
+  target: default

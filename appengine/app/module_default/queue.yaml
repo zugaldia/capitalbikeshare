@@ -1,0 +1,6 @@
+queue:
+
+# User registration queue
+- name: user-registration
+  rate: 5/s
+  target: default
