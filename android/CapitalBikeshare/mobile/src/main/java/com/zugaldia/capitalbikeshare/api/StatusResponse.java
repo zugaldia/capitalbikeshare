@@ -4,7 +4,7 @@ package com.zugaldia.capitalbikeshare.api;
  * Model for a status response
  */
 public class StatusResponse {
-    public int code;
+    public int status_code;
     public StatusObject status;
 
     public class StatusObject {

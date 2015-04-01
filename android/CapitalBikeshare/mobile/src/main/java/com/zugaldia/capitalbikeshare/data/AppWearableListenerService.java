@@ -130,7 +130,7 @@ public class AppWearableListenerService extends WearableListenerService {
 
         @Override
         public void success(ClosestResponse closestResponse, Response response) {
-            if (closestResponse == null || closestResponse.code != 200) {
+            if (closestResponse == null || closestResponse.status_code != 200) {
                 Log.d(LOG_TAG, "Failed: Server Error");
                 putRequest(PATH_RESPONSE_FIND_BIKE, "ERROR", 0.0, 0.0);
             } else {
@@ -153,7 +153,7 @@ public class AppWearableListenerService extends WearableListenerService {
 
         @Override
         public void success(ClosestResponse closestResponse, Response response) {
-            if (closestResponse == null || closestResponse.code != 200) {
+            if (closestResponse == null || closestResponse.status_code != 200) {
                 Log.d(LOG_TAG, "Failed: Server Error");
                 putRequest(PATH_RESPONSE_FIND_DOCK, "ERROR", 0.0, 0.0);
             } else {
@@ -176,7 +176,7 @@ public class AppWearableListenerService extends WearableListenerService {
 
         @Override
         public void success(StatusResponse statusResponse, Response response) {
-            if (statusResponse == null || statusResponse.code != 200) {
+            if (statusResponse == null || statusResponse.status_code != 200) {
                 Log.d(LOG_TAG, "Failed: Server Error");
                 putRequest(PATH_RESPONSE_GET_STATUS, "ERROR", 0.0, 0.0);
             } else {

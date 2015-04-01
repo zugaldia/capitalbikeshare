@@ -195,7 +195,7 @@ public class MainFragment extends Fragment {
 
         @Override
         public void success(ClosestResponse closestResponse, Response response) {
-            if (closestResponse == null || closestResponse.code != 200) {
+            if (closestResponse == null || closestResponse.status_code != 200) {
                 textBikes.setText("Oh noes, we couldn't find you a bike nearby.");
             } else {
                 targetBike = closestResponse;
@@ -216,7 +216,7 @@ public class MainFragment extends Fragment {
 
         @Override
         public void success(ClosestResponse closestResponse, Response response) {
-            if (closestResponse == null || closestResponse.code != 200) {
+            if (closestResponse == null || closestResponse.status_code != 200) {
                 textDocks.setText("Oh noes, we couldn't find you a dock nearby.");
             } else {
                 targetDock = closestResponse;
@@ -237,7 +237,7 @@ public class MainFragment extends Fragment {
 
         @Override
         public void success(StatusResponse statusResponse, Response response) {
-            if (statusResponse == null || statusResponse.code != 200) {
+            if (statusResponse == null || statusResponse.status_code != 200) {
                 textSummary.setText("Sorry, I got nothing.");
             } else {
                 textSummary.setText(statusResponse.status.getSummary()

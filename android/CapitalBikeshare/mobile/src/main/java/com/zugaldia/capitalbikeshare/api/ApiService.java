@@ -10,7 +10,7 @@ import retrofit.RestAdapter;
 public class ApiService {
 
     private final String LOG_TAG = ApiService.class.getSimpleName();
-    private final String ENDPOINT = "https://com-zugaldia-capitalbikeshare.appspot.com";
+    private final String ENDPOINT = "https://api-dot-com-zugaldia-capitalbikeshare.appspot.com";
 
     private ApiInterface service;
 

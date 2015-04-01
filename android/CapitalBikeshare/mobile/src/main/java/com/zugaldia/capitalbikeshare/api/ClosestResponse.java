@@ -4,7 +4,7 @@ package com.zugaldia.capitalbikeshare.api;
  * Model for a closest bike/dock response
  */
 public class ClosestResponse {
-    public int code;
+    public int status_code;
     public StationObject station;
 
     public class StationObject {
