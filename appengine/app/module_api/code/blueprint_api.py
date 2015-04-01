@@ -2,6 +2,7 @@
 See http://flask.pocoo.org/docs/blueprints/
 '''
 
+from code.views.api.api_data import ApiData
 from code.views.api.api_meta import ApiMeta
 from code.views.api.api_user import ApiUser
 from flask import Blueprint
@@ -17,3 +18,4 @@ The API
 api = restful.Api(blueprint_api)
 api.add_resource(ApiMeta, Config.API_BASE + '/meta/<action>')
 api.add_resource(ApiUser, Config.API_BASE + '/user/<action>')
+api.add_resource(ApiData, Config.API_BASE + '/data/<action>')

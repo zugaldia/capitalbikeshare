@@ -58,17 +58,17 @@ prepare-prod:
 # Default module
 #
 
-run-default: prepare-dev minify-js minify-css
+run-default: prepare-dev
 	@echo "Running default module..."
 	cd $(MODULE_DEFAULT); dev_appserver.py . \
 		--require_indexes
 
-run-default-clean: prepare-dev minify-js minify-css
+run-default-clean: prepare-dev
 	@echo "Running default module (clean)..."
 	cd $(MODULE_DEFAULT); dev_appserver.py . \
 		--clear_datastore --require_indexes
 
-deploy-default: prepare-prod minify-js minify-css
+deploy-default: prepare-prod
 	@echo "Deploying default module..."
 	cd $(MODULE_DEFAULT); $(PYTHON) $(APPENGINE)/appcfg.py \
 		--noauth_local_webserver --oauth2 \
