@@ -1,0 +1,10 @@
+package com.zugaldia.capitalbikeshare;
+
+/**
+ * Think twice before adding this file to GitHub
+ */
+public class AppConfig {
+
+    public static final String SENTRY_DSN = "";
+
+}

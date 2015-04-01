@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.bugsnag.android.Bugsnag;
+import com.joshdholtz.sentry.Sentry;
 
 /**
  * Main app activity
@@ -21,9 +21,6 @@ public class MainActivity extends ActionBarActivity {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
-        // Init Bugsnag
-        initBugsnag();
-
         // Set view
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
@@ -32,15 +29,19 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new MainFragment())
                     .commit();
         }
+
+        // Sentry
+        initSentry();
     }
 
     /*
-     * Bugsnag
+     * We now use Sentry
+     * https://github.com/joshdholtz/Sentry-Android
      */
 
-    public void initBugsnag() {
-        Log.d(LOG_TAG, "initBugsnag");
-        Bugsnag.init(this);
+    public void initSentry() {
+        Log.d(LOG_TAG, "initSentry");
+        Sentry.init(this.getApplicationContext(), AppConfig.SENTRY_DSN);
     }
 
     /*
