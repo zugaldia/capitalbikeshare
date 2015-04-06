@@ -4,6 +4,9 @@ PROJECT_ID = com-zugaldia-capitalbikeshare
 # Appython path
 APPYTHON_ROOT = ../appython
 
+# Runscope URL
+RUNSCOPE_TRIGGER = https://api.runscope.com/radar/bucket/b23e4f92-cd07-47fa-bf37-0a0f23ceac77/trigger
+
 #
 # No need to change anything after this
 #
@@ -95,3 +98,5 @@ deploy-api: prepare-prod
 		--noauth_local_webserver --oauth2 \
 		--application=$(PROJECT_ID) \
 		update api.yaml
+	@echo "Triggering Runscope tests..."
+	curl $(RUNSCOPE_TRIGGER) > /dev/null
