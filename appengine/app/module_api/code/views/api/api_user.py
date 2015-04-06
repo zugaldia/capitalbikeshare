@@ -9,6 +9,7 @@ from shared.config import Config
 
 import logging
 
+
 class ApiUser(BaseApi):
 
     '''

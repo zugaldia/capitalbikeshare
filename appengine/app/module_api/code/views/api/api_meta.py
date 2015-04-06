@@ -11,6 +11,7 @@ from google.appengine.api import capabilities
 from shared.config import PROJECT_BUILD, PROJECT_STAGE
 from shared.components.api.api_sentry import api_sentry
 
+
 class ApiMeta(BaseApi):
 
     '''
