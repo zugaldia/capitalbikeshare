@@ -12,6 +12,7 @@ MEMCACHE_NAMESPACE = 'capitalbikeshare'
 
 STATUS_FEED_XML = 'https://www.capitalbikeshare.com/data/stations/bikeStations.xml'
 
+
 class CapitalBikeshareClient(object):
     '''
     API

@@ -1,4 +1,6 @@
+from appython.components.api.api_exception import ApiException
 from appython.components.api.base_api import BaseApi
+from google.appengine.api.urlfetch import DeadlineExceededError
 from shared.components.api.api_requests import closest_bike_request
 from shared.components.api.api_requests import closest_dock_request
 from shared.components.api.api_requests import status_feed_request
@@ -6,16 +8,34 @@ from shared.components.api.api_requests import status_request
 from shared.components.api.api_sentry import api_sentry
 from shared.components.capitalbikeshare.client import CapitalBikeshareClient
 
-import logging
+# import logging
 
 # More than half a kilometer is considered too far
 # That's about a 5-6 minutes walk
 CUTOFF_DISTANCE = 500
 
-client = CapitalBikeshareClient()
-
 
 class ApiData(BaseApi):
+
+    '''
+    Shared by all methods, private
+    '''
+
+    def _get_status_feed(self, latitude, longitude, distance_sort):
+        try:
+            client = CapitalBikeshareClient()
+            status_feed = client.get_status_feed(
+                latitude=latitude,
+                longitude=longitude,
+                distance_sort=distance_sort)
+        except DeadlineExceededError:
+            # We convert the exception into an ApiException because this
+            # doesn't need to be tracked by Sentry.
+            raise ApiException(
+                'The connection with Capital Bikeshare timed out, '
+                'please try again in a minute.')
+        else:
+            return status_feed
 
     '''
     Provides a full feed of data in JSON format, if a latlon is provided it
@@ -35,7 +55,7 @@ class ApiData(BaseApi):
         longitude = args.get('longitude')
 
         # Get the data
-        status_feed = client.get_status_feed(
+        status_feed = self._get_status_feed(
             latitude=latitude, longitude=longitude, distance_sort=True)
 
         # Done
@@ -58,7 +78,7 @@ class ApiData(BaseApi):
         status = {'stations': 0, 'bikes': 0, 'docks': 0}
 
         # Process the data
-        status_feed = client.get_status_feed(
+        status_feed = self._get_status_feed(
             latitude=latitude, longitude=longitude, distance_sort=True)
         for station in status_feed['stations']:
             if station['distance_m'] <= CUTOFF_DISTANCE:
@@ -88,7 +108,7 @@ class ApiData(BaseApi):
         target_station = {}
 
         # Process the data
-        status_feed = client.get_status_feed(
+        status_feed = self._get_status_feed(
             latitude=latitude, longitude=longitude, distance_sort=True)
         for station in status_feed['stations']:
             if station['distance_m'] <= CUTOFF_DISTANCE and station['nb_bikes'] > 0:
@@ -114,7 +134,7 @@ class ApiData(BaseApi):
         target_station = {}
 
         # Process the data
-        status_feed = client.get_status_feed(
+        status_feed = self._get_status_feed(
             latitude=latitude, longitude=longitude, distance_sort=True)
         for station in status_feed['stations']:
             if station['distance_m'] <= CUTOFF_DISTANCE and station['nb_empty_docks'] > 0:
