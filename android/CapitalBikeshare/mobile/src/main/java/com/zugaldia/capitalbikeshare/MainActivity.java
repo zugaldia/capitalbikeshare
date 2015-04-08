@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.joshdholtz.sentry.Sentry;
+import com.zugaldia.capitalbikeshare.common.AppConfig;
 
 /**
  * Main app activity

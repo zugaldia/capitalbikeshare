@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         applicationId "com.zugaldia.capitalbikeshare"
@@ -26,4 +26,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile files('libs/sentry-1.1.4.jar')
+    compile project(':common')
 }

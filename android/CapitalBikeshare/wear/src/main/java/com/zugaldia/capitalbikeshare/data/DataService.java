@@ -15,7 +15,7 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
-import com.zugaldia.capitalbikeshare.AppConstants;
+import com.zugaldia.capitalbikeshare.common.AppConstants;
 
 import java.util.Date;
 

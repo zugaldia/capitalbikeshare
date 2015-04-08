@@ -1,7 +1,7 @@
-package com.zugaldia.capitalbikeshare;
+package com.zugaldia.capitalbikeshare.common;
 
 /**
- * Shared by all app classes
+ * Shared constants across modules
  */
 public class AppConstants {
 

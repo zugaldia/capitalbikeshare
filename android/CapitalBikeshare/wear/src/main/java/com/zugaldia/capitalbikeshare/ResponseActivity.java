@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.wearable.view.CardFragment;
 import android.util.Log;
 
+import com.zugaldia.capitalbikeshare.common.AppConstants;
+
 
 public class ResponseActivity extends Activity {
 

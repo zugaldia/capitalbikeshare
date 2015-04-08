@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.wearable.DataMap;
+import com.zugaldia.capitalbikeshare.common.AppConstants;
 import com.zugaldia.capitalbikeshare.data.DataService;
 import com.zugaldia.capitalbikeshare.data.ResponseCallback;
 import com.zugaldia.capitalbikeshare.location.LocationCallback;

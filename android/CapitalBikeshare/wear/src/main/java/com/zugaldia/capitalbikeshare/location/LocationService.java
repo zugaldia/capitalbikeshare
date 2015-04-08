@@ -13,7 +13,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.zugaldia.capitalbikeshare.AppConstants;
+import com.zugaldia.capitalbikeshare.common.AppConstants;
 
 /**
  * A location service tailored for the wearable. Differently to the phone feature,
