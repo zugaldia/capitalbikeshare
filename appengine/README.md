@@ -141,7 +141,7 @@ Gives a summary of the stations situation around you. This gives the user an ide
 }
 ```
 
-In this method, both the `latitude` and `longitude` fields are required. Stations farther than 500 meters (a 5-6 minutes walk) are considered "too far" and are not included in the result.
+In this method, both the `latitude` and `longitude` fields are required. Stations farther than 1km (a 10-15 minutes walk) are considered "too far" and are not included in the result.
 
 ## Get closest bike
 
@@ -177,7 +177,7 @@ Finds the closest bike available to a given location.
 }
 ```
 
-In this method, both the `latitude` and `longitude` fields are required. Stations farther than 500 meters (a 5-6 minutes walk) are considered "too far" and are not included in the result.
+In this method, both the `latitude` and `longitude` fields are required. Stations farther than 1km (a 10-15 minutes walk) are considered "too far" and are not included in the result.
 
 ## Get closest dock
 
@@ -213,4 +213,4 @@ Finds the closest dock available to a given location.
 }
 ```
 
-In this method, both the `latitude` and `longitude` fields are required. Stations farther than 500 meters (a 5-6 minutes walk) are considered "too far" and are not included in the result.
+In this method, both the `latitude` and `longitude` fields are required. Stations farther than 1km (a 10-15 minutes walk) are considered "too far" and are not included in the result.
