@@ -2,6 +2,8 @@
 
 Capital Bikeshare for Wear lets you find the closest available bike, and dock, directly from your Android Wear smartwatch.
 
+Note that this app is in now way affiliated with the Capital Bikeshare company. This app is provided as an open source, free of charge, product to Washingtonians.
+
 ![Screenshot](https://raw.githubusercontent.com/zugaldia/capitalbikeshare/master/assets/github_readme.png)
 
 ## Features
