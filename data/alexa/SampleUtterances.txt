@@ -1,0 +1,8 @@
+NearbyIntent bike
+NearbyIntent bike nearby
+NearbyIntent closest bike
+NearbyIntent closest bike nearby
+NearbyIntent find me a bike
+NearbyIntent find me a bike nearby
+NearbyIntent where can i find a bike
+NearbyIntent where can i find a bike nearby
