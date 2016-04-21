@@ -20,8 +20,8 @@ for feature in data.get('features'):
 	geometry = feature.get('geometry')
 	shape = asShape(geometry)
 	zipcodes[zipcode] = {
-		'lat': shape.centroid.x,
-		'lon': shape.centroid.y}
+		'lat': shape.centroid.y,
+		'lon': shape.centroid.x}
 
 with open('zipcodes.json', 'w') as data_file:    
 	json.dump(zipcodes, data_file, indent=True)
