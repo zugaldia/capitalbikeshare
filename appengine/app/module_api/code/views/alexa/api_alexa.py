@@ -9,6 +9,7 @@ from appython.components.api.common_responses import StringResponse
 from flask import request
 from shared.components.api.api_sentry import api_sentry
 from shared.components.capitalbikeshare.client import CapitalBikeshareClient
+import cgi
 
 import logging
 
@@ -111,12 +112,12 @@ class ApiAlexa(BaseApi):
 
         # Build message
         if target_station is None:
-            message = 'Sorry, we couldn\'t find any available bikes nearby.'
+            message = cgi.escape('Sorry, we couldn\'t find any available bikes nearby.')
         else:
-            message = 'We\'ve found %d bikes on %s, that\'s about a %d minutes walk.' % (
+            message = cgi.escape('We\'ve found %d bikes on %s, that\'s about a %d minutes walk.' % (
                 target_station.get('nb_bikes'),
                 target_station.get('name'),
-                target_station.get('distance_min'))
+                target_station.get('distance_min')))
 
         # Build response
         response = self._get_response_template()
