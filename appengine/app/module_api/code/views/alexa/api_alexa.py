@@ -4,8 +4,6 @@ See: https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/a
 
 from appython.components.api.api_exception import ApiException
 from appython.components.api.base_api import BaseApi
-from appython.components.api.common_requests import string_request
-from appython.components.api.common_responses import StringResponse
 from flask import request
 from shared.components.api.api_sentry import api_sentry
 from shared.components.capitalbikeshare.client import CapitalBikeshareClient
@@ -25,14 +23,10 @@ class ApiAlexa(BaseApi):
     Test request and response models
     '''
 
-    # /api/v1/alexa/echo?text=foo
+    # /api/v1/alexa/test?text=foo
     @api_sentry
-    def get_echo(self):
-        args = string_request.parse_args()
-        text = args.get('text') or '(empty)'
-        data = StringResponse(text=text).to_api()
-        self.set_data(data=data)
-        return self.get_response()
+    def get_test(self):
+        return self._handle_nearby_intent()
 
     '''
     Main skill router
