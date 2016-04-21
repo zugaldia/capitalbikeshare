@@ -23,7 +23,7 @@ for feature in data.get('features'):
 		'lat': shape.centroid.x,
 		'lon': shape.centroid.y}
 
-with open('zipcodes.geojson', 'w') as data_file:    
+with open('zipcodes.json', 'w') as data_file:    
 	json.dump(zipcodes, data_file, indent=True)
 
 print 'Done.'
