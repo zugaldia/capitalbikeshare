@@ -10,9 +10,8 @@ from shared.components.capitalbikeshare.client import CapitalBikeshareClient
 
 # import logging
 
-# More than half a kilometer is considered too far
-# That's about a 5-6 minutes walk
-CUTOFF_DISTANCE = 500
+# More than a kilometer is considered too far
+CUTOFF_DISTANCE = 1000
 
 
 class ApiData(BaseApi):
