@@ -74,7 +74,7 @@ run-default-clean: prepare-dev
 deploy-default: prepare-prod
 	@echo "Deploying default module..."
 	cd $(MODULE_DEFAULT); $(PYTHON) $(APPENGINE)/appcfg.py \
-		--noauth_local_webserver --oauth2 \
+		--noauth_local_webserver \
 		--application=$(PROJECT_ID) \
 		update .
 
@@ -95,7 +95,7 @@ run-api-clean: prepare-dev
 deploy-api: prepare-prod
 	@echo "Deploying API module..."
 	cd $(MODULE_API); $(PYTHON) $(APPENGINE)/appcfg.py \
-		--noauth_local_webserver --oauth2 \
+		--noauth_local_webserver \
 		--application=$(PROJECT_ID) \
 		update api.yaml
 	@echo "Triggering Runscope tests..."
